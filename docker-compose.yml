@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+      target: dev
+    env_file: ./.env
+    ports:
+      - "3001:3001"
+    environment:
+      - API_PORT=3001
+    volumes:
+      - ./apps/api/src:/app/src
+      - ./apps/api/package.json:/app/package.json
+    command: npx tsx src/index.ts
+
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+      target: dev
+    env_file: ./.env
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./apps/web/app:/app/app
+      - ./apps/web/providers:/app/providers
+    command: npm run dev
+    depends_on:
+      - api
