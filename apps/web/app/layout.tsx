@@ -1,4 +1,7 @@
+import React from 'react'
+import './globals.css'
 import { ReactQueryProvider } from '../providers/react-query'
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
