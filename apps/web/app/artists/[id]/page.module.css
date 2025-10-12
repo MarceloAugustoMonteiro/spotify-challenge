@@ -1,5 +1,5 @@
 .container {
-  padding: 40px 64px;
+  padding: 32px;
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -33,7 +33,7 @@
 }
 
 .artistName {
-  font-size: 32px;
+  font-size: 28px;
   margin-bottom: 8px;
   font-family: 'Rubik', sans-serif;
   font-weight: 700;
@@ -135,10 +135,48 @@
   cursor: not-allowed;
 }
 
-.endMessage {
-  text-align: center;
-  margin-top: 32px;
-  color: rgba(255, 255, 255, 0.5);
-  font-family: 'DM Sans', sans-serif;
+@media (max-width: 1024px) {
+  .container {
+    padding: 20px 16px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+  }
+
+  .artistImage {
+    width: 80px;
+    height: 80px;
+  }
+
+  .artistName {
+    font-size: 24px;
+  }
+
+  .artistFollowers {
+    font-size: 12px;
+  }
+
+  .albumCard {
+    padding: 12px;
+  }
+
+  .albumName {
+    font-size: 14px;
+  }
+
+  .albumYear {
+    font-size: 12px;
+  }
+
+  .albumImage,
+  .albumPlaceholder {
+    width: 48px;
+    height: 48px;
+  }
 }
 

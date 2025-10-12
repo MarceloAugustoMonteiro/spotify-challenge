@@ -4,7 +4,7 @@
 }
 
 .mainContent {
-  margin-left: 228px;
+  margin-left: 250px;
   flex: 1;
   background-color: #090707;
   min-height: 100vh;
@@ -20,3 +20,9 @@
   font-family: 'DM Sans', sans-serif;
 }
 
+@media (max-width: 1024px) {
+  .mainContent {
+    margin-left: 0;
+    padding-top: 80px;
+  }
+}
