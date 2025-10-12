@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import styles from './Sidebar.module.css'
@@ -13,6 +13,7 @@ const Logo = () => (
 
 export default function Sidebar() {
   const pathname = usePathname()
+  const [isOpen, setIsOpen] = useState(false)
 
   const navItems = [
     { name: 'Home', path: '/', icon: '🏠' },
@@ -21,34 +22,58 @@ export default function Sidebar() {
     { name: 'Perfil', path: '/profile', icon: '👤' }
   ]
 
+  const handleLinkClick = () => {
+    setIsOpen(false)
+  }
+
   return (
-    <aside className={styles.sidebar}>
-      <div className={styles.logo}>
-        <Logo />
-      </div>
+    <>
+      <button 
+        className={styles.hamburger}
+        onClick={() => setIsOpen(!isOpen)}
+        aria-label="Menu"
+      >
+        <span className={`${styles.hamburgerLine} ${isOpen ? styles.hamburgerLineOpen : ''}`}></span>
+        <span className={`${styles.hamburgerLine} ${isOpen ? styles.hamburgerLineOpen : ''}`}></span>
+        <span className={`${styles.hamburgerLine} ${isOpen ? styles.hamburgerLineOpen : ''}`}></span>
+      </button>
 
-      <nav className={styles.nav}>
-        {navItems.map((item) => {
-          const isActive = pathname === item.path
-          return (
-            <Link
-              key={item.path}
-              href={item.path}
-              className={`${styles.navLink} ${isActive ? styles.active : ''}`}
-            >
-              <span className={styles.navIcon}>{item.icon}</span>
-              {item.name}
-            </Link>
-          )
-        })}
-      </nav>
+      {isOpen && (
+        <div 
+          className={styles.overlay}
+          onClick={() => setIsOpen(false)}
+        />
+      )}
 
-      <div className={styles.footer}>
-        <button className={styles.installButton}>
-          <span className={styles.installIcon}>⬇️</span>
-          Instalar PWA
-        </button>
-      </div>
-    </aside>
+      <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ''}`}>
+        <div className={styles.logo}>
+          <Logo />
+        </div>
+
+        <nav className={styles.nav}>
+          {navItems.map((item) => {
+            const isActive = pathname === item.path
+            return (
+              <Link
+                key={item.path}
+                href={item.path}
+                onClick={handleLinkClick}
+                className={`${styles.navLink} ${isActive ? styles.active : ''}`}
+              >
+                <span className={styles.navIcon}>{item.icon}</span>
+                {item.name}
+              </Link>
+            )
+          })}
+        </nav>
+
+        <div className={styles.footer}>
+          <button className={styles.installButton}>
+            <span className={styles.installIcon}>⬇️</span>
+            Instalar PWA
+          </button>
+        </div>
+      </aside>
+    </>
   )
 }

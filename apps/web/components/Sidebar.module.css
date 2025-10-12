@@ -1,5 +1,5 @@
 .sidebar {
-  width: 228px;
+  width: 250px;
   height: 100vh;
   background-color: #000000;
   position: fixed;
@@ -7,11 +7,15 @@
   top: 0;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out;
 }
 
 .logo {
-  padding: 24px 24px 40px;
+  padding: 31px 29px 43px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .nav {
@@ -22,11 +26,11 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 12px 24px;
-  color: rgba(255, 255, 255, 0.7);
+  padding: 0px 33px 24px;
+  color: #949EA2;
   text-decoration: none;
-  font-size: 16px;
-  font-weight: 400;
+  font-size: 19px;
+  font-weight: 700;
   transition: color 0.2s;
   cursor: pointer;
   font-family: 'DM Sans', sans-serif;
@@ -46,18 +50,18 @@
 }
 
 .footer {
-  padding: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 24px 30px 13px;
 }
 
 .installButton {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 26px;
   background: transparent;
   border: none;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 14px;
+  color: #FFFFFF;
+  font-size: 19px;
+  font-weight: 700;
   cursor: pointer;
   font-family: 'DM Sans', sans-serif;
   padding: 0;
@@ -67,3 +71,102 @@
   font-size: 20px;
 }
 
+.hamburger {
+  display: none;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 2000;
+  background-color: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px;
+  width: 48px;
+  height: 48px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.hamburger:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.hamburgerLine {
+  width: 24px;
+  height: 2px;
+  background-color: #FFFFFF;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.hamburgerLine:nth-child(1) {
+  transform-origin: top left;
+}
+
+.hamburgerLine:nth-child(3) {
+  transform-origin: bottom left;
+}
+
+.hamburger:hover .hamburgerLine {
+  background-color: #57B660;
+}
+
+.hamburgerLineOpen:nth-child(1) {
+  transform: rotate(45deg) translate(2px, -2px);
+}
+
+.hamburgerLineOpen:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburgerLineOpen:nth-child(3) {
+  transform: rotate(-45deg) translate(2px, 2px);
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 999;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1024px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .overlay {
+    display: block;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebarOpen {
+    transform: translateX(0);
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.5);
+  }
+
+  .logo {
+    padding: 24px 24px 40px 80px; 
+  }
+}
