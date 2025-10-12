@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import styles from './page.module.css'
+import { useAuth } from '../hooks/useAuth'
 
 const API = process.env.NEXT_PUBLIC_API_BASE_URL!
 
@@ -12,11 +13,11 @@ const Logo = () => (
   </svg>
 )
 
-export default function Home() {
+function LoginScreen() {
   function login() {
     window.location.href = `${API}/auth/login`
   }
-  
+
   return (
     <div className={styles.container}>
       <div className={styles.logoWrapper}>
@@ -32,4 +33,22 @@ export default function Home() {
       </button>
     </div>
   )
+}
+
+function DashboardHome() {
+  return <div className={styles.emptyHome}></div>
+}
+
+export default function Home() {
+  const { isAuthenticated, loading } = useAuth()
+
+  if (loading) {
+    return (
+      <div className={styles.container}>
+        <p className={styles.description}>Carregando...</p>
+      </div>
+    )
+  }
+
+  return isAuthenticated ? <DashboardHome /> : <LoginScreen />
 }
