@@ -1,5 +1,6 @@
 'use client'
 import React, { useEffect, useState, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import { use } from 'react'
 import styles from './page.module.css'
 
@@ -30,6 +31,7 @@ interface Artist {
 }
 
 export default function ArtistAlbumsPage({ params }: { params: Promise<{ id: string }> }) {
+  const router = useRouter()
   const resolvedParams = use(params)
   const [artist, setArtist] = useState<Artist | null>(null)
   const [albums, setAlbums] = useState<Album[]>([])
@@ -66,7 +68,11 @@ export default function ArtistAlbumsPage({ params }: { params: Promise<{ id: str
         const data = await res.json()
         
         if (data.items && data.items.length > 0) {
-          setAlbums(p => [...p, ...data.items])
+          setAlbums(p => {
+            const existingIds = new Set(p.map(album => album.id))
+            const newItems = data.items.filter((item: Album) => !existingIds.has(item.id))
+            return [...p, ...newItems]
+          })
           setOffset(p => p + data.items.length)
         }
         
@@ -90,7 +96,7 @@ export default function ArtistAlbumsPage({ params }: { params: Promise<{ id: str
       {artist && (
         <header className={styles.header}>
           <button
-            onClick={() => window.history.back()}
+            onClick={() => router.back()}
             className={styles.backButton}
           >
             ←

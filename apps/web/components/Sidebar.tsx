@@ -1,5 +1,6 @@
 'use client'
 import React from 'react'
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import styles from './Sidebar.module.css'
 
@@ -30,14 +31,14 @@ export default function Sidebar() {
         {navItems.map((item) => {
           const isActive = pathname === item.path
           return (
-            <a
+            <Link
               key={item.path}
               href={item.path}
               className={`${styles.navLink} ${isActive ? styles.active : ''}`}
             >
               <span className={styles.navIcon}>{item.icon}</span>
               {item.name}
-            </a>
+            </Link>
           )
         })}
       </nav>

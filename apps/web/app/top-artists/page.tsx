@@ -1,5 +1,6 @@
 'use client'
 import React, { useEffect, useState, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import styles from './page.module.css'
 
 const API = process.env.NEXT_PUBLIC_API_BASE_URL!
@@ -17,6 +18,7 @@ interface SpotifyArtist {
 }
 
 export default function TopArtists() {
+  const router = useRouter()
   const [items, setItems] = useState<SpotifyArtist[]>([])
   const [offset, setOffset] = useState(0)
   const [hasMore, setHasMore] = useState(true)
@@ -33,7 +35,11 @@ export default function TopArtists() {
         const data = await res.json()
         
         if (data.items && data.items.length > 0) {
-          setItems(p => [...p, ...data.items])
+          setItems(p => {
+            const existingIds = new Set(p.map(artist => artist.id))
+            const newItems = data.items.filter((item: SpotifyArtist) => !existingIds.has(item.id))
+            return [...p, ...newItems]
+          })
           setOffset(p => p + data.items.length)
         }
         
@@ -65,7 +71,7 @@ export default function TopArtists() {
         {items.map((artist) => (
           <div 
             key={artist.id}
-            onClick={() => window.location.href = `/artists/${artist.id}`}
+            onClick={() => router.push(`/artists/${artist.id}`)}
             className={styles.artistCard}
           >
             <img 

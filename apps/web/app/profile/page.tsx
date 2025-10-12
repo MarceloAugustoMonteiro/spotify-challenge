@@ -1,5 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import styles from './page.module.css'
 
 const API = process.env.NEXT_PUBLIC_API_BASE_URL!
@@ -16,6 +17,7 @@ interface UserProfile {
 }
 
 export default function ProfilePage() {
+  const router = useRouter()
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -40,7 +42,7 @@ export default function ProfilePage() {
   }, [])
 
   const handleLogout = () => {
-    window.location.href = '/'
+    router.push('/')
   }
 
   if (loading) {
@@ -57,7 +59,9 @@ export default function ProfilePage() {
         <p className={styles.errorMessage}>
           {error || 'Erro ao carregar perfil'}
         </p>
-        <a href="/" className={styles.errorLink}>Voltar para home</a>
+        <button onClick={() => router.push('/')} className={styles.errorLink}>
+          Voltar para home
+        </button>
       </div>
     )
   }
