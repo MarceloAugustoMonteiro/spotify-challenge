@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useState, useCallback } from 'react'
 import { use } from 'react'
+import styles from './page.module.css'
 
 const API = process.env.NEXT_PUBLIC_API_BASE_URL!
 
@@ -85,132 +86,81 @@ export default function ArtistAlbumsPage({ params }: { params: Promise<{ id: str
   }, [])
 
   return (
-    <main style={{ padding: 24 }}>
+    <div className={styles.container}>
       {artist && (
-        <div style={{ marginBottom: 32 }}>
-          <div style={{ display: 'flex', gap: 24, alignItems: 'center', marginBottom: 24 }}>
-            {artist.images?.[0] && (
-              <img 
-                src={artist.images[0].url} 
-                alt={artist.name}
-                width={150} 
-                height={150} 
-                style={{ borderRadius: '50%' }} 
-              />
+        <header className={styles.header}>
+          <button
+            onClick={() => window.history.back()}
+            className={styles.backButton}
+          >
+            ←
+          </button>
+          
+          {artist.images?.[0] && (
+            <img 
+              src={artist.images[0].url} 
+              alt={artist.name}
+              width={120} 
+              height={120} 
+              className={styles.artistImage}
+            />
+          )}
+          
+          <div className={styles.artistInfo}>
+            <h1 className={styles.artistName}>{artist.name}</h1>
+            {artist.followers && (
+              <p className={styles.artistFollowers}>
+                {artist.followers.total.toLocaleString('pt-BR')} seguidores
+              </p>
             )}
-            <div>
-              <h1 style={{ marginBottom: 8 }}>{artist.name}</h1>
-              {artist.followers && (
-                <p style={{ color: '#666', marginBottom: 4 }}>
-                  {artist.followers.total.toLocaleString('pt-BR')} seguidores
-                </p>
-              )}
-              {artist.genres && artist.genres.length > 0 && (
-                <p style={{ color: '#666' }}>
-                  {artist.genres.slice(0, 3).join(', ')}
-                </p>
-              )}
-            </div>
           </div>
-        </div>
+        </header>
       )}
 
-      <h2 style={{ marginBottom: 16 }}>Álbuns e Singles</h2>
-      
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', 
-        gap: 20 
-      }}>
+      <div className={styles.albumsList}>
         {albums.map((album) => (
           <div 
-            key={album.id} 
-            style={{ 
-              border: '1px solid #ddd', 
-              borderRadius: 8, 
-              padding: 12,
-              cursor: 'pointer',
-              transition: 'transform 0.2s',
+            key={album.id}
+            onClick={() => {
+              if (album.external_urls?.spotify) {
+                window.open(album.external_urls.spotify, '_blank')
+              }
             }}
-            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+            className={styles.albumCard}
           >
             {album.images?.[0] ? (
               <img 
                 src={album.images[0].url} 
                 alt={album.name}
-                width={180} 
-                height={180} 
-                style={{ 
-                  width: '100%', 
-                  height: 'auto', 
-                  borderRadius: 6,
-                  marginBottom: 8
-                }} 
+                width={64} 
+                height={64} 
+                className={styles.albumImage}
               />
             ) : (
-              <div style={{ 
-                width: '100%', 
-                height: 180, 
-                backgroundColor: '#333',
-                borderRadius: 6,
-                marginBottom: 8,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#fff',
-                fontSize: 48
-              }}>
-                💿
-              </div>
+              <div className={styles.albumPlaceholder}>💿</div>
             )}
-            <h3 style={{ margin: '8px 0', fontSize: 14, lineHeight: 1.4 }}>
-              {album.name}
-            </h3>
-            <p style={{ fontSize: 12, color: '#666', margin: '4px 0' }}>
-              {new Date(album.release_date).getFullYear()} • {album.total_tracks} faixas
-            </p>
-            <p style={{ fontSize: 11, color: '#999', margin: '4px 0', textTransform: 'capitalize' }}>
-              {album.album_type === 'album' ? 'Álbum' : 
-               album.album_type === 'single' ? 'Single' : 
-               album.album_type}
-            </p>
-            {album.external_urls?.spotify && (
-              <a 
-                href={album.external_urls.spotify}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ fontSize: 12, color: '#1db954', marginTop: 8, display: 'block' }}
-                onClick={(e) => e.stopPropagation()}
-              >
-                Ouvir no Spotify →
-              </a>
-            )}
+            <div className={styles.albumInfo}>
+              <h3 className={styles.albumName}>{album.name}</h3>
+              <p className={styles.albumYear}>
+                {new Date(album.release_date).getFullYear()}
+              </p>
+            </div>
           </div>
         ))}
       </div>
 
       {albums.length === 0 && !loading && (
-        <p style={{ textAlign: 'center', marginTop: 24, color: '#666' }}>
+        <p className={styles.emptyState}>
           Nenhum álbum encontrado para este artista.
         </p>
       )}
 
       {hasMore && albums.length > 0 && (
-        <div style={{ textAlign: 'center', marginTop: 24 }}>
+        <div className={styles.loadMoreWrapper}>
           <button 
             onClick={load} 
             disabled={loading}
-            style={{
-              padding: '12px 24px',
-              fontSize: 16,
-              backgroundColor: loading ? '#ccc' : '#1db954',
-              color: 'white',
-              border: 'none',
-              borderRadius: 24,
-              cursor: loading ? 'not-allowed' : 'pointer',
-              transition: 'background-color 0.2s'
-            }}
+            className={styles.loadMoreButton}
           >
             {loading ? 'Carregando...' : 'Carregar mais álbuns'}
           </button>
@@ -218,15 +168,10 @@ export default function ArtistAlbumsPage({ params }: { params: Promise<{ id: str
       )}
 
       {!hasMore && albums.length > 0 && (
-        <p style={{ textAlign: 'center', marginTop: 24, color: '#666' }}>
-          Você chegou ao final da lista! 
+        <p className={styles.endMessage}>
+          Você chegou ao final da lista!
         </p>
       )}
-
-      <div style={{ marginTop: 32 }}>
-        <a href="/top-artists">← Voltar para artistas</a>
-      </div>
-    </main>
+    </div>
   )
 }
-

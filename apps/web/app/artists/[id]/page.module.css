@@ -1,0 +1,144 @@
+.container {
+  padding: 40px 64px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 48px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.backButton {
+  background: transparent;
+  border: none;
+  color: #FFFFFF;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  margin-right: 8px;
+}
+
+.artistImage {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.artistInfo {
+  flex: 1;
+}
+
+.artistName {
+  font-size: 32px;
+  margin-bottom: 8px;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.artistFollowers {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.albumsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.albumCard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.albumCard:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.albumImage {
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.albumPlaceholder {
+  width: 64px;
+  height: 64px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.albumInfo {
+  flex: 1;
+}
+
+.albumName {
+  font-size: 16px;
+  font-weight: 500;
+  color: #FFFFFF;
+  margin-bottom: 4px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.albumYear {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.emptyState {
+  text-align: center;
+  margin-top: 40px;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.loadMoreWrapper {
+  text-align: center;
+  margin-top: 32px;
+}
+
+.loadMoreButton {
+  padding: 12px 32px;
+  font-size: 14px;
+  font-weight: 700;
+  background-color: #57B660;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 32px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.loadMoreButton:hover {
+  background-color: #6BC975;
+}
+
+.loadMoreButton:disabled {
+  background-color: rgba(255, 255, 255, 0.1);
+  cursor: not-allowed;
+}
+
+.endMessage {
+  text-align: center;
+  margin-top: 32px;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: 'DM Sans', sans-serif;
+}
+
