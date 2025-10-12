@@ -3,6 +3,7 @@ import React, { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { use } from 'react'
 import styles from './page.module.css'
+import { formatDate } from '@/utils/formatDate'
 
 const API = process.env.NEXT_PUBLIC_API_BASE_URL!
 
@@ -148,7 +149,7 @@ export default function ArtistAlbumsPage({ params }: { params: Promise<{ id: str
             <div className={styles.albumInfo}>
               <h3 className={styles.albumName}>{album.name}</h3>
               <p className={styles.albumYear}>
-                {new Date(album.release_date).getFullYear()}
+                {formatDate(album.release_date)}
               </p>
             </div>
           </div>
@@ -171,12 +172,6 @@ export default function ArtistAlbumsPage({ params }: { params: Promise<{ id: str
             {loading ? 'Carregando...' : 'Carregar mais álbuns'}
           </button>
         </div>
-      )}
-
-      {!hasMore && albums.length > 0 && (
-        <p className={styles.endMessage}>
-          Você chegou ao final da lista!
-        </p>
       )}
     </div>
   )
