@@ -72,8 +72,8 @@ export default function ProfilePage() {
         <img 
           src={profile.images[0].url} 
           alt={profile.display_name}
-          width={160} 
-          height={160} 
+          width={128} 
+          height={128} 
           className={styles.profileImage}
         />
       )}
