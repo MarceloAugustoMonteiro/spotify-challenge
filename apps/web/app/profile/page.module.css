@@ -31,7 +31,20 @@
 }
 
 .errorLink {
-  color: #57B660;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  background-color: #57B660;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 32px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.errorLink:hover {
+  background-color: #6BC975;
 }
 
 .profileImage {
