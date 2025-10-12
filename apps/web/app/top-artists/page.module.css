@@ -1,0 +1,98 @@
+.container {
+  padding: 40px 64px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 40px;
+}
+
+.title {
+  font-size: 32px;
+  margin-bottom: 8px;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.artistsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.artistCard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.artistCard:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.artistImage {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.artistName {
+  font-size: 18px;
+  font-weight: 500;
+  color: #FFFFFF;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.emptyState {
+  text-align: center;
+  margin-top: 40px;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.loadMoreWrapper {
+  text-align: center;
+  margin-top: 32px;
+}
+
+.loadMoreButton {
+  padding: 12px 32px;
+  font-size: 14px;
+  font-weight: 700;
+  background-color: #57B660;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 32px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.loadMoreButton:hover {
+  background-color: #6BC975;
+}
+
+.loadMoreButton:disabled {
+  background-color: rgba(255, 255, 255, 0.1);
+  cursor: not-allowed;
+}
+
+.endMessage {
+  text-align: center;
+  margin-top: 32px;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: 'DM Sans', sans-serif;
+}
+

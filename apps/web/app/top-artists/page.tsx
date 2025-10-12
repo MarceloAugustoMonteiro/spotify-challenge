@@ -1,5 +1,6 @@
 'use client'
 import React, { useEffect, useState, useCallback } from 'react'
+import styles from './page.module.css'
 
 const API = process.env.NEXT_PUBLIC_API_BASE_URL!
 
@@ -52,65 +53,45 @@ export default function TopArtists() {
   }, [])
 
   return (
-    <main style={{ padding: 24 }}>
-      <h1>Artistas mais ouvidos</h1>
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', 
-        gap: 20,
-        marginTop: 24
-      }}>
-        {items.map((a) => (
+    <div className={styles.container}>
+      <header className={styles.header}>
+        <h1 className={styles.title}>Top Artistas</h1>
+        <p className={styles.subtitle}>
+          Aqui você encontra seus artistas preferidos
+        </p>
+      </header>
+
+      <div className={styles.artistsList}>
+        {items.map((artist) => (
           <div 
-            key={a.id} 
-            style={{ 
-              border: '1px solid #ddd',
-              borderRadius: 8,
-              padding: 12,
-              textAlign: 'center',
-              cursor: 'pointer',
-              transition: 'transform 0.2s'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-            onClick={() => window.location.href = `/artists/${a.id}`}
+            key={artist.id}
+            onClick={() => window.location.href = `/artists/${artist.id}`}
+            className={styles.artistCard}
           >
             <img 
-              src={a.images?.[0]?.url} 
-              alt={a.name}
-              width={150} 
-              height={150} 
-              style={{ borderRadius: '50%', width: '100%', height: 'auto' }} 
+              src={artist.images?.[0]?.url || 'https://via.placeholder.com/64'} 
+              alt={artist.name}
+              width={64} 
+              height={64} 
+              className={styles.artistImage}
             />
-            <h3 style={{ marginTop: 12, fontSize: 16 }}>{a.name}</h3>
-            <p style={{ fontSize: 12, color: '#1db954', marginTop: 8 }}>
-              Ver álbuns →
-            </p>
+            <h3 className={styles.artistName}>{artist.name}</h3>
           </div>
         ))}
       </div>
       
       {items.length === 0 && !loading && (
-        <p style={{ textAlign: 'center', marginTop: 24, color: '#666' }}>
+        <p className={styles.emptyState}>
           Nenhum artista encontrado. Ouça mais músicas no Spotify para ver seus artistas favoritos aqui!
         </p>
       )}
       
       {hasMore && items.length > 0 && (
-        <div style={{ textAlign: 'center', marginTop: 24 }}>
+        <div className={styles.loadMoreWrapper}>
           <button 
             onClick={load} 
             disabled={loading}
-            style={{
-              padding: '12px 24px',
-              fontSize: 16,
-              backgroundColor: loading ? '#ccc' : '#1db954',
-              color: 'white',
-              border: 'none',
-              borderRadius: 24,
-              cursor: loading ? 'not-allowed' : 'pointer',
-              transition: 'background-color 0.2s'
-            }}
+            className={styles.loadMoreButton}
           >
             {loading ? 'Carregando...' : 'Carregar mais artistas'}
           </button>
@@ -118,14 +99,10 @@ export default function TopArtists() {
       )}
       
       {!hasMore && items.length > 0 && (
-        <p style={{ textAlign: 'center', marginTop: 24, color: '#666' }}>
+        <p className={styles.endMessage}>
           Você chegou ao final da lista!
         </p>
       )}
-      
-      <div style={{ marginTop: 32 }}>
-        <a href="/">← Voltar para home</a>
-      </div>
-    </main>
+    </div>
   )
 }
