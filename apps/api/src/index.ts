@@ -9,7 +9,7 @@ const app = express()
 app.use(express.json())
 app.use(cookieParser())
 
-const origin = process.env.CORS_ORIGIN ?? 'http://localhost:3000'
+const origin = process.env.CORS_ORIGIN ?? 'http://127.0.0.1:3000'
 app.use(cors({ origin, credentials: true }))
 
 app.get('/health', (_, res) => res.json({ ok: true }))

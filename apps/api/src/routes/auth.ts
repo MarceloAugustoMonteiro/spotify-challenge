@@ -7,7 +7,6 @@ const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET!
 const REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI!
 const JWT_SECRET = process.env.JWT_SECRET!
 const COOKIE_NAME = process.env.COOKIE_NAME ?? 'sp_session'
-const COOKIE_DOMAIN = process.env.COOKIE_DOMAIN ?? 'localhost'
 
 export const authRouter = Router()
 
@@ -45,10 +44,13 @@ authRouter.get('/callback', async (req, res) => {
   const token = jwt.sign(payload, JWT_SECRET, { expiresIn: Math.floor(data.expires_in * 0.9) })
 
   res.cookie(COOKIE_NAME, token, {
-    httpOnly: true, secure: false, sameSite: 'lax',
-    domain: COOKIE_DOMAIN, path: '/', maxAge: data.expires_in * 1000
+    httpOnly: true, 
+    secure: false, 
+    sameSite: 'lax',
+    path: '/', 
+    maxAge: data.expires_in * 1000
   })
-  res.redirect(process.env.CORS_ORIGIN ?? 'http://localhost:3000')
+  res.redirect(process.env.CORS_ORIGIN ?? 'http://127.0.0.1:3000')
 })
 
 authRouter.post('/refresh', async (req, res) => {
@@ -64,8 +66,11 @@ authRouter.post('/refresh', async (req, res) => {
     const payload = { access_token: data.access_token, refresh_token: decoded.refresh_token }
     const token = jwt.sign(payload, JWT_SECRET, { expiresIn: Math.floor(data.expires_in * 0.9) })
     res.cookie(COOKIE_NAME, token, {
-      httpOnly: true, secure: false, sameSite: 'lax',
-      domain: COOKIE_DOMAIN, path: '/', maxAge: data.expires_in * 1000
+      httpOnly: true, 
+      secure: false, 
+      sameSite: 'lax',
+      path: '/', 
+      maxAge: data.expires_in * 1000
     })
     res.json({ ok: true })
   } catch {
