@@ -43,7 +43,11 @@ export default function PlaylistsPage() {
         const data = await res.json()
         
         if (data.items && data.items.length > 0) {
-          setPlaylists(p => [...p, ...data.items])
+          setPlaylists(p => {
+            const existingIds = new Set(p.map(pl => pl.id))
+            const newItems = data.items.filter((item: Playlist) => !existingIds.has(item.id))
+            return [...p, ...newItems]
+          })
           setOffset(p => p + data.items.length)
         }
         
@@ -79,7 +83,11 @@ export default function PlaylistsPage() {
 
       if (res.ok) {
         const newPlaylist = await res.json()
-        setPlaylists([newPlaylist, ...playlists])
+        setPlaylists(prevPlaylists => {
+          const exists = prevPlaylists.some(p => p.id === newPlaylist.id)
+          if (exists) return prevPlaylists
+          return [newPlaylist, ...prevPlaylists]
+        })
         setNewPlaylistName('')
         setShowCreateModal(false)
         alert('Playlist criada com sucesso!')
