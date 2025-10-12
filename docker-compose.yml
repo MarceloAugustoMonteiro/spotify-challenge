@@ -25,7 +25,10 @@ services:
       - "3000:3000"
     volumes:
       - ./apps/web/app:/app/app
+      - ./apps/web/components:/app/components
+      - ./apps/web/hooks:/app/hooks
       - ./apps/web/providers:/app/providers
+      - ./apps/web/utils:/app/utils
     command: npm run dev
     depends_on:
       - api
