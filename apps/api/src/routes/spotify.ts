@@ -30,7 +30,38 @@ spotifyRouter.get('/top-artists', async (req, res) => {
     const token = getBearerFromCookie(req.cookies?.[COOKIE_NAME])
     const limit = Number(req.query.limit ?? 20)
     const offset = Number(req.query.offset ?? 0)
-    const { data } = await axios.get(`https://api.spotify.com/v1/me/top/artists?limit=${limit}&offset=${offset}`, {
+    const timeRange = (req.query.time_range as string) ?? 'medium_term' 
+    const { data } = await axios.get(`https://api.spotify.com/v1/me/top/artists?limit=${limit}&offset=${offset}&time_range=${timeRange}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    res.json(data)
+  } catch {
+    res.status(401).json({ error: 'unauthorized' })
+  }
+})
+
+spotifyRouter.get('/artists/:id/albums', async (req, res) => {
+  try {
+    const token = getBearerFromCookie(req.cookies?.[COOKIE_NAME])
+    const { id } = req.params
+    const limit = Number(req.query.limit ?? 20)
+    const offset = Number(req.query.offset ?? 0)
+    const includeGroups = (req.query.include_groups as string) ?? 'album,single' 
+    const { data } = await axios.get(
+      `https://api.spotify.com/v1/artists/${id}/albums?limit=${limit}&offset=${offset}&include_groups=${includeGroups}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    res.json(data)
+  } catch (error) {
+    res.status(401).json({ error: 'unauthorized' })
+  }
+})
+
+spotifyRouter.get('/artists/:id', async (req, res) => {
+  try {
+    const token = getBearerFromCookie(req.cookies?.[COOKIE_NAME])
+    const { id } = req.params
+    const { data } = await axios.get(`https://api.spotify.com/v1/artists/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     res.json(data)
