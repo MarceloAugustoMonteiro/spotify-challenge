@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #090707;
+  padding: 24px;
+}
+
+.logoWrapper {
+  margin-bottom: 40px;
+}
+
+.description {
+  color: #FFFFFF;
+  font-size: 16px;
+  margin-bottom: 32px;
+  text-align: center;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.loginButton {
+  padding: 14px 48px;
+  font-size: 16px;
+  font-weight: 700;
+  background-color: #57B660;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 32px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.loginButton:hover {
+  background-color: #6BC975;
+  transform: scale(1.05);
+}
+
