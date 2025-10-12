@@ -103,12 +103,6 @@ export default function TopArtists() {
           </button>
         </div>
       )}
-      
-      {!hasMore && items.length > 0 && (
-        <p className={styles.endMessage}>
-          Você chegou ao final da lista!
-        </p>
-      )}
     </div>
   )
 }

@@ -164,12 +164,6 @@ export default function PlaylistsPage() {
         </div>
       )}
 
-      {!hasMore && playlists.length > 0 && (
-        <p className={styles.endMessage}>
-          Você chegou ao final da lista!
-        </p>
-      )}
-
       {showCreateModal && (
         <div 
           className={styles.modalOverlay}

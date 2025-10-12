@@ -25,7 +25,7 @@ function LoginScreen() {
       </div>
       
       <p className={styles.description}>
-        Entra com sua conta Spotify clicando no botão abaixo
+        Entre com sua conta Spotify clicando no botão abaixo
       </p>
 
       <button onClick={login} className={styles.loginButton}>
