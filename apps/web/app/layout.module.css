@@ -1,0 +1,12 @@
+.layoutWrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+.mainContent {
+  margin-left: 228px;
+  flex: 1;
+  background-color: #090707;
+  min-height: 100vh;
+}
+
