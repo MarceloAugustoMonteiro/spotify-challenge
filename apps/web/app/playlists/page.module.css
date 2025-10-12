@@ -1,0 +1,227 @@
+.container {
+  padding: 40px 64px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.headerContent {
+  flex: 1;
+}
+
+.title {
+  font-size: 32px;
+  margin-bottom: 8px;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.createButton {
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  background-color: #57B660;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 32px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.createButton:hover {
+  background-color: #6BC975;
+}
+
+.playlistsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.playlistCard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.playlistCard:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.playlistImage {
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.playlistPlaceholder {
+  width: 64px;
+  height: 64px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.playlistInfo {
+  flex: 1;
+}
+
+.playlistName {
+  font-size: 16px;
+  font-weight: 500;
+  color: #FFFFFF;
+  margin-bottom: 4px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.playlistOwner {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.emptyState {
+  text-align: center;
+  margin-top: 40px;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.loadMoreWrapper {
+  text-align: center;
+  margin-top: 32px;
+}
+
+.loadMoreButton {
+  padding: 12px 32px;
+  font-size: 14px;
+  font-weight: 700;
+  background-color: #57B660;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 32px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.loadMoreButton:hover {
+  background-color: #6BC975;
+}
+
+.loadMoreButton:disabled {
+  background-color: rgba(255, 255, 255, 0.1);
+  cursor: not-allowed;
+}
+
+.endMessage {
+  text-align: center;
+  margin-top: 32px;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* Modal */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: #282828;
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+}
+
+.modalClose {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  color: #FFFFFF;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.modalTitle {
+  font-size: 24px;
+  margin-bottom: 8px;
+  text-align: center;
+  font-family: 'Rubik', sans-serif;
+  color: #FFFFFF;
+}
+
+.modalForm {
+  margin-top: 32px;
+}
+
+.modalInput {
+  width: 100%;
+  padding: 16px;
+  font-size: 16px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 8px;
+  color: #FFFFFF;
+  margin-bottom: 24px;
+  font-family: 'DM Sans', sans-serif;
+  text-align: center;
+}
+
+.modalInput::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.modalSubmitButton {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  background-color: #57B660;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 32px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.modalSubmitButton:hover {
+  background-color: #6BC975;
+}
+

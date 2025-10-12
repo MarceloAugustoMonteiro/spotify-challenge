@@ -1,5 +1,6 @@
 'use client'
 import React, { useEffect, useState, useCallback } from 'react'
+import styles from './page.module.css'
 
 const API = process.env.NEXT_PUBLIC_API_BASE_URL!
 
@@ -25,10 +26,8 @@ export default function PlaylistsPage() {
   const [offset, setOffset] = useState(0)
   const [loading, setLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
-  const [showCreateForm, setShowCreateForm] = useState(false)
+  const [showCreateModal, setShowCreateModal] = useState(false)
   const [newPlaylistName, setNewPlaylistName] = useState('')
-  const [newPlaylistDescription, setNewPlaylistDescription] = useState('')
-  const [isPublic, setIsPublic] = useState(true)
   const limit = 20
 
   const load = useCallback(async () => {
@@ -74,8 +73,7 @@ export default function PlaylistsPage() {
         credentials: 'include',
         body: JSON.stringify({
           name: newPlaylistName,
-          description: newPlaylistDescription,
-          isPublic
+          isPublic: true
         })
       })
 
@@ -83,8 +81,7 @@ export default function PlaylistsPage() {
         const newPlaylist = await res.json()
         setPlaylists([newPlaylist, ...playlists])
         setNewPlaylistName('')
-        setNewPlaylistDescription('')
-        setShowCreateForm(false)
+        setShowCreateModal(false)
         alert('Playlist criada com sucesso!')
       } else {
         alert('Erro ao criar playlist')
@@ -95,165 +92,64 @@ export default function PlaylistsPage() {
   }
 
   return (
-    <main style={{ padding: 24 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-        <h1>Minhas Playlists</h1>
-        <button onClick={() => setShowCreateForm(!showCreateForm)}>
-          {showCreateForm ? 'Cancelar' : '+ Nova Playlist'}
-        </button>
-      </div>
-
-      {showCreateForm && (
-        <div style={{ 
-          backgroundColor: '#f5f5f5', 
-          padding: 20, 
-          borderRadius: 8, 
-          marginBottom: 24 
-        }}>
-          <h3>Criar Nova Playlist</h3>
-          <form onSubmit={createPlaylist}>
-            <div style={{ marginBottom: 12 }}>
-              <label>
-                <strong>Nome:</strong>
-                <input
-                  type="text"
-                  value={newPlaylistName}
-                  onChange={(e) => setNewPlaylistName(e.target.value)}
-                  required
-                  style={{
-                    width: '100%',
-                    padding: 8,
-                    marginTop: 4,
-                    borderRadius: 4,
-                    border: '1px solid #ccc'
-                  }}
-                />
-              </label>
-            </div>
-            <div style={{ marginBottom: 12 }}>
-              <label>
-                <strong>Descrição (opcional):</strong>
-                <textarea
-                  value={newPlaylistDescription}
-                  onChange={(e) => setNewPlaylistDescription(e.target.value)}
-                  rows={3}
-                  style={{
-                    width: '100%',
-                    padding: 8,
-                    marginTop: 4,
-                    borderRadius: 4,
-                    border: '1px solid #ccc'
-                  }}
-                />
-              </label>
-            </div>
-            <div style={{ marginBottom: 12 }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <input
-                  type="checkbox"
-                  checked={isPublic}
-                  onChange={(e) => setIsPublic(e.target.checked)}
-                />
-                <span>Playlist pública</span>
-              </label>
-            </div>
-            <button type="submit" style={{ marginRight: 8 }}>
-              Criar Playlist
-            </button>
-          </form>
+    <div className={styles.container}>
+      <header className={styles.header}>
+        <div className={styles.headerContent}>
+          <h1 className={styles.title}>Minhas Playlists</h1>
+          <p className={styles.subtitle}>Sua coleção pessoal de playlists</p>
         </div>
-      )}
+        <button 
+          onClick={() => setShowCreateModal(true)}
+          className={styles.createButton}
+        >
+          Criar playlist
+        </button>
+      </header>
 
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', 
-        gap: 20 
-      }}>
+      <div className={styles.playlistsList}>
         {playlists.map((playlist) => (
           <div 
-            key={playlist.id} 
-            style={{ 
-              border: '1px solid #ddd', 
-              borderRadius: 8, 
-              padding: 12,
-              cursor: 'pointer',
-              transition: 'transform 0.2s',
+            key={playlist.id}
+            className={styles.playlistCard}
+            onClick={() => {
+              if (playlist.external_urls?.spotify) {
+                window.open(playlist.external_urls.spotify, '_blank')
+              }
             }}
-            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
           >
             {playlist.images?.[0] ? (
               <img 
                 src={playlist.images[0].url} 
                 alt={playlist.name}
-                width={200} 
-                height={200} 
-                style={{ 
-                  width: '100%', 
-                  height: 'auto', 
-                  borderRadius: 6,
-                  marginBottom: 8
-                }} 
+                width={64} 
+                height={64} 
+                className={styles.playlistImage}
               />
             ) : (
-              <div style={{ 
-                width: '100%', 
-                height: 200, 
-                backgroundColor: '#333',
-                borderRadius: 6,
-                marginBottom: 8,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#fff'
-              }}>
-                🎵
-              </div>
+              <div className={styles.playlistPlaceholder}>🎵</div>
             )}
-            <h3 style={{ margin: '8px 0', fontSize: 16 }}>{playlist.name}</h3>
-            <p style={{ fontSize: 12, color: '#666', margin: '4px 0' }}>
-              {playlist.tracks?.total || 0} músicas
-            </p>
-            {playlist.owner && (
-              <p style={{ fontSize: 12, color: '#999', margin: '4px 0' }}>
-                Por {playlist.owner.display_name}
+            <div className={styles.playlistInfo}>
+              <h3 className={styles.playlistName}>{playlist.name}</h3>
+              <p className={styles.playlistOwner}>
+                {playlist.owner?.display_name}
               </p>
-            )}
-            {playlist.external_urls?.spotify && (
-              <a 
-                href={playlist.external_urls.spotify}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ fontSize: 12, color: '#1db954' }}
-              >
-                Abrir no Spotify →
-              </a>
-            )}
+            </div>
           </div>
         ))}
       </div>
 
       {playlists.length === 0 && !loading && (
-        <p style={{ textAlign: 'center', marginTop: 24, color: '#666' }}>
+        <p className={styles.emptyState}>
           Nenhuma playlist encontrada. Crie sua primeira playlist!
         </p>
       )}
 
       {hasMore && playlists.length > 0 && (
-        <div style={{ textAlign: 'center', marginTop: 24 }}>
+        <div className={styles.loadMoreWrapper}>
           <button 
             onClick={load} 
             disabled={loading}
-            style={{
-              padding: '12px 24px',
-              fontSize: 16,
-              backgroundColor: loading ? '#ccc' : '#1db954',
-              color: 'white',
-              border: 'none',
-              borderRadius: 24,
-              cursor: loading ? 'not-allowed' : 'pointer',
-              transition: 'background-color 0.2s'
-            }}
+            className={styles.loadMoreButton}
           >
             {loading ? 'Carregando...' : 'Carregar mais'}
           </button>
@@ -261,15 +157,49 @@ export default function PlaylistsPage() {
       )}
 
       {!hasMore && playlists.length > 0 && (
-        <p style={{ textAlign: 'center', marginTop: 24, color: '#666' }}>
-          Você chegou ao final da lista! 
+        <p className={styles.endMessage}>
+          Você chegou ao final da lista!
         </p>
       )}
 
-      <div style={{ marginTop: 32 }}>
-        <a href="/">← Voltar para home</a>
-      </div>
-    </main>
+      {showCreateModal && (
+        <div 
+          className={styles.modalOverlay}
+          onClick={() => setShowCreateModal(false)}
+        >
+          <div 
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowCreateModal(false)}
+              className={styles.modalClose}
+            >
+              ×
+            </button>
+
+            <h2 className={styles.modalTitle}>
+              Dê um nome a sua playlist
+            </h2>
+
+            <form onSubmit={createPlaylist} className={styles.modalForm}>
+              <input
+                type="text"
+                value={newPlaylistName}
+                onChange={(e) => setNewPlaylistName(e.target.value)}
+                placeholder="Minha playlist #1"
+                required
+                autoFocus
+                className={styles.modalInput}
+              />
+              
+              <button type="submit" className={styles.modalSubmitButton}>
+                Criar
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
   )
 }
-
