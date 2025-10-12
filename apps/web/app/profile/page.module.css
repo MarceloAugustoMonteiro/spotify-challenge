@@ -1,0 +1,67 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-family: 'DM Sans', sans-serif;
+  color: #FFFFFF;
+}
+
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.errorMessage {
+  color: #ff6b6b;
+  margin-bottom: 16px;
+}
+
+.errorLink {
+  color: #57B660;
+}
+
+.profileImage {
+  border-radius: 50%;
+  margin-bottom: 24px;
+  object-fit: cover;
+}
+
+.profileName {
+  font-size: 32px;
+  margin-bottom: 32px;
+  color: #FFFFFF;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 700;
+}
+
+.logoutButton {
+  padding: 12px 32px;
+  font-size: 14px;
+  font-weight: 700;
+  background-color: #57B660;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 32px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.logoutButton:hover {
+  background-color: #6BC975;
+}
+
