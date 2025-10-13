@@ -15,7 +15,7 @@
   padding: 31px 29px 43px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .nav {
@@ -68,15 +68,14 @@
 }
 
 .installIcon {
-  font-size: 20px;
+  display: flex;
+}
+
+.mobileHeader {
+  display: none;
 }
 
 .hamburger {
-  display: none;
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 2000;
   background-color: #000000;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
@@ -149,8 +148,29 @@
 }
 
 @media (max-width: 1024px) {
+  .mobileHeader {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background-color: #000000;
+    z-index: 2000;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .mobileHeaderLogo {
+    display: flex;
+    align-items: center;
+  }
+
   .hamburger {
     display: flex;
+    position: static;
   }
 
   .overlay {
@@ -159,6 +179,8 @@
 
   .sidebar {
     transform: translateX(-100%);
+    top: 80px;
+    height: calc(100vh - 80px);
   }
 
   .sidebarOpen {
@@ -167,6 +189,10 @@
   }
 
   .logo {
-    padding: 24px 24px 40px 80px; 
+    display: none;
+  }
+
+  .nav {
+    padding-top: 24px;
   }
 }
