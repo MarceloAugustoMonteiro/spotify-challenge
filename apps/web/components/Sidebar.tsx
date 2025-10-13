@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import styles from './Sidebar.module.css'
+import { HomeIcon, ArtistsIcon, PlaylistsIcon, ProfileIcon } from './icons'
 
 const Logo = () => (
   <svg width="131" height="40" viewBox="0 0 131 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -16,10 +17,10 @@ export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false)
 
   const navItems = [
-    { name: 'Home', path: '/', icon: '🏠' },
-    { name: 'Artistas', path: '/top-artists', icon: '🎵' },
-    { name: 'Playlists', path: '/playlists', icon: '▶' },
-    { name: 'Perfil', path: '/profile', icon: '👤' }
+    { name: 'Home', path: '/', icon: HomeIcon },
+    { name: 'Artistas', path: '/top-artists', icon: ArtistsIcon },
+    { name: 'Playlists', path: '/playlists', icon: PlaylistsIcon },
+    { name: 'Perfil', path: '/profile', icon: ProfileIcon }
   ]
 
   const handleLinkClick = () => {
@@ -53,6 +54,7 @@ export default function Sidebar() {
         <nav className={styles.nav}>
           {navItems.map((item) => {
             const isActive = pathname === item.path
+            const IconComponent = item.icon
             return (
               <Link
                 key={item.path}
@@ -60,7 +62,9 @@ export default function Sidebar() {
                 onClick={handleLinkClick}
                 className={`${styles.navLink} ${isActive ? styles.active : ''}`}
               >
-                <span className={styles.navIcon}>{item.icon}</span>
+                <span className={styles.navIcon}>
+                  <IconComponent color={isActive ? '#FFFFFF' : '#949EA2'} />
+                </span>
                 {item.name}
               </Link>
             )
