@@ -46,7 +46,7 @@
 }
 
 .navIcon {
-  font-size: 20px;
+  display: flex;
 }
 
 .footer {
