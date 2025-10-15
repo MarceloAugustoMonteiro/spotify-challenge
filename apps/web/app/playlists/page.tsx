@@ -1,5 +1,7 @@
 'use client'
 import React, { useEffect, useState, useCallback } from 'react'
+import Modal from '../../components/Modal'
+import { useModal } from '../../hooks/useModal'
 import styles from './page.module.css'
 
 const API = process.env.NEXT_PUBLIC_API_BASE_URL!
@@ -28,6 +30,7 @@ export default function PlaylistsPage() {
   const [hasMore, setHasMore] = useState(true)
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [newPlaylistName, setNewPlaylistName] = useState('')
+  const { modalState, showSuccess, showError, closeModal } = useModal()
   const limit = 20
 
   const load = useCallback(async () => {
@@ -90,12 +93,12 @@ export default function PlaylistsPage() {
         })
         setNewPlaylistName('')
         setShowCreateModal(false)
-        alert('Playlist criada com sucesso!')
+        showSuccess('Sucesso!', 'Playlist criada.')
       } else {
-        alert('Erro ao criar playlist')
+        showError('Erro', 'Não foi possível criar a playlist. Tente novamente.')
       }
     } catch (error) {
-      alert('Erro ao criar playlist')
+      showError('Erro', 'Ocorreu um erro ao criar a playlist. Verifique sua conexão.')
     }
   }
 
@@ -202,6 +205,14 @@ export default function PlaylistsPage() {
           </div>
         </div>
       )}
+
+      <Modal
+        isOpen={modalState.isOpen}
+        onClose={closeModal}
+        title={modalState.title}
+        message={modalState.message}
+        type={modalState.type}
+      />
     </div>
   )
 }
