@@ -195,6 +195,11 @@
   text-align: center;
 }
 
+.modalInput:focus,
+.modalInput:focus-visible {
+  outline: none;
+}
+
 .modalInput::placeholder {
   color: rgba(255, 255, 255, 0.5);
 }

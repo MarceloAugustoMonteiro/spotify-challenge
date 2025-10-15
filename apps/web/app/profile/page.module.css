@@ -36,7 +36,7 @@
   font-size: 14px;
   font-weight: 700;
   background-color: #57B660;
-  color: #FFFFFF;
+  color: #181414;
   border: none;
   border-radius: 32px;
   cursor: pointer;
@@ -69,12 +69,17 @@
   border: none;
   border-radius: 24px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, opacity 0.2s;
   font-family: 'DM Sans', sans-serif;
 }
 
-.logoutButton:hover {
+.logoutButton:hover:not(:disabled) {
   background-color: #6BC975;
+}
+
+.logoutButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 @media (max-width: 1024px) {
