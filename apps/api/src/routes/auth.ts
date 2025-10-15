@@ -77,3 +77,13 @@ authRouter.post('/refresh', async (req, res) => {
     res.status(401).json({ error: 'refresh_failed' })
   }
 })
+
+authRouter.post('/logout', (__req, res) => {
+  res.clearCookie(COOKIE_NAME, {
+    httpOnly: true,
+    secure: false,
+    sameSite: 'lax',
+    path: '/'
+  })
+  res.json({ ok: true, message: 'Logged out successfully' })
+})
