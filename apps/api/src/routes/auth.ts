@@ -1,87 +1,77 @@
 import { Router } from 'express'
-import jwt from 'jsonwebtoken'
-import axios from 'axios'
+import { authService } from '../services/AuthService'
 
-const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID!
-const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET!
-const REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI!
-const JWT_SECRET = process.env.JWT_SECRET!
 const COOKIE_NAME = process.env.COOKIE_NAME ?? 'sp_session'
+const CORS_ORIGIN = process.env.CORS_ORIGIN ?? 'http://127.0.0.1:3000'
 
 export const authRouter = Router()
 
 authRouter.get('/login', (_req, res) => {
-  const scope = [
-    'user-read-email','user-read-private',
-    'playlist-read-private','playlist-modify-private','playlist-modify-public',
-    'user-top-read'
-  ].join(' ')
-  const params = new URLSearchParams({
-    response_type: 'code',
-    client_id: CLIENT_ID,
-    scope,
-    redirect_uri: REDIRECT_URI
-  })
-  res.redirect(`https://accounts.spotify.com/authorize?${params.toString()}`)
+  const authUrl = authService.generateAuthorizationUrl()
+  res.redirect(authUrl)
 })
 
 authRouter.get('/callback', async (req, res) => {
-  const code = String(req.query.code ?? '')
-  if (!code) return res.status(400).json({ error: 'missing_code' })
+  try {
+    const code = String(req.query.code ?? '')
+    if (!code) {
+      return res.status(400).json({ error: 'missing_code' })
+    }
 
-  const body = new URLSearchParams({
-    grant_type: 'authorization_code',
-    code,
-    redirect_uri: REDIRECT_URI
-  })
-  const basic = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')
+    const spotifyTokens = await authService.exchangeCodeForToken(code)
 
-  const { data } = await axios.post('https://accounts.spotify.com/api/token', body.toString(), {
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded', Authorization: `Basic ${basic}` }
-  })
+    const jwtToken = authService.createJWTToken(spotifyTokens)
 
-  const payload = { access_token: data.access_token, refresh_token: data.refresh_token }
-  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: Math.floor(data.expires_in * 0.9) })
+    res.cookie(COOKIE_NAME, jwtToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: spotifyTokens.expires_in * 1000
+    })
 
-  res.cookie(COOKIE_NAME, token, {
-    httpOnly: true, 
-    secure: false, 
-    sameSite: 'lax',
-    path: '/', 
-    maxAge: data.expires_in * 1000
-  })
-  res.redirect(process.env.CORS_ORIGIN ?? 'http://127.0.0.1:3000')
+    res.redirect(CORS_ORIGIN)
+  } catch (error) {
+    console.error('Auth callback error:', error)
+    res.status(500).json({ error: 'authentication_failed' })
+  }
 })
 
 authRouter.post('/refresh', async (req, res) => {
   try {
     const cookie = req.cookies?.[COOKIE_NAME]
-    if (!cookie) return res.status(401).json({ error: 'no_session' })
-    const decoded = jwt.verify(cookie, JWT_SECRET) as { refresh_token: string }
-    const basic = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')
-    const body = new URLSearchParams({ grant_type: 'refresh_token', refresh_token: decoded.refresh_token })
-    const { data } = await axios.post('https://accounts.spotify.com/api/token', body.toString(), {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded', Authorization: `Basic ${basic}` }
+    if (!cookie) {
+      return res.status(401).json({ error: 'no_session' })
+    }
+
+    const decoded = authService.verifyJWTToken(cookie)
+    
+    const newTokens = await authService.refreshAccessToken(decoded.refresh_token)
+
+    const newJwtToken = authService.createJWTToken({
+      ...newTokens,
+      refresh_token: decoded.refresh_token
     })
-    const payload = { access_token: data.access_token, refresh_token: decoded.refresh_token }
-    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: Math.floor(data.expires_in * 0.9) })
-    res.cookie(COOKIE_NAME, token, {
-      httpOnly: true, 
-      secure: false, 
+
+    res.cookie(COOKIE_NAME, newJwtToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      path: '/', 
-      maxAge: data.expires_in * 1000
+      path: '/',
+      maxAge: newTokens.expires_in * 1000
     })
+
     res.json({ ok: true })
-  } catch {
+  } catch (error) {
+    console.error('Token refresh error:', error)
     res.status(401).json({ error: 'refresh_failed' })
   }
 })
 
-authRouter.post('/logout', (__req, res) => {
+authRouter.post('/logout', (_req, res) => {
   res.clearCookie(COOKIE_NAME, {
     httpOnly: true,
-    secure: false,
+    secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
     path: '/'
   })
