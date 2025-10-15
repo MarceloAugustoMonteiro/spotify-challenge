@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useRequireAuth } from '../../hooks/useRequireAuth'
 import styles from './page.module.css'
 
 const API = process.env.NEXT_PUBLIC_API_BASE_URL!
@@ -18,11 +19,14 @@ interface UserProfile {
 
 export default function ProfilePage() {
   const router = useRouter()
+  const { isAuthenticated, loading: authLoading } = useRequireAuth()
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    if (!isAuthenticated || authLoading) return
+
     async function loadProfile() {
       try {
         const res = await fetch(`${API}/api/me`, { credentials: 'include' })
@@ -30,7 +34,9 @@ export default function ProfilePage() {
           const data = await res.json()
           setProfile(data)
         } else {
-          setError('Erro ao carregar perfil')
+          if (res.status !== 401) {
+            setError('Erro ao carregar perfil')
+          }
         }
       } catch (err) {
         setError('Erro ao carregar perfil')
@@ -39,18 +45,22 @@ export default function ProfilePage() {
       }
     }
     loadProfile()
-  }, [])
+  }, [isAuthenticated, authLoading])
 
   const handleLogout = () => {
     router.push('/')
   }
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className={styles.loadingContainer}>
         <p>Carregando...</p>
       </div>
     )
+  }
+
+  if (!isAuthenticated) {
+    return null
   }
 
   if (error || !profile) {

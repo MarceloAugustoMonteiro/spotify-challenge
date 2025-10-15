@@ -1,5 +1,6 @@
 'use client'
 import React, { useEffect, useState, useCallback } from 'react'
+import { useRequireAuth } from '../../hooks/useRequireAuth'
 import Modal from '../../components/Modal'
 import { useModal } from '../../hooks/useModal'
 import styles from './page.module.css'
@@ -24,6 +25,7 @@ interface Playlist {
 }
 
 export default function PlaylistsPage() {
+  const { isAuthenticated, loading: authLoading } = useRequireAuth()
   const [playlists, setPlaylists] = useState<Playlist[]>([])
   const [offset, setOffset] = useState(0)
   const [loading, setLoading] = useState(false)
@@ -100,6 +102,18 @@ export default function PlaylistsPage() {
     } catch (error) {
       showError('Erro', 'Ocorreu um erro ao criar a playlist. Verifique sua conexão.')
     }
+  }
+
+  if (authLoading) {
+    return (
+      <div className={styles.container}>
+        <p className={styles.emptyState}>Carregando...</p>
+      </div>
+    )
+  }
+
+  if (!isAuthenticated) {
+    return null
   }
 
   return (

@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { use } from 'react'
+import { useRequireAuth } from '../../../hooks/useRequireAuth'
 import styles from './page.module.css'
 import { formatDate } from '@/utils/formatDate'
 
@@ -34,6 +35,7 @@ interface Artist {
 export default function ArtistAlbumsPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter()
   const resolvedParams = use(params)
+  const { isAuthenticated, loading: authLoading } = useRequireAuth()
   const [artist, setArtist] = useState<Artist | null>(null)
   const [albums, setAlbums] = useState<Album[]>([])
   const [offset, setOffset] = useState(0)
@@ -91,6 +93,18 @@ export default function ArtistAlbumsPage({ params }: { params: Promise<{ id: str
       load()
     }
   }, [])
+
+  if (authLoading) {
+    return (
+      <div className={styles.container}>
+        <p className={styles.emptyState}>Carregando...</p>
+      </div>
+    )
+  }
+
+  if (!isAuthenticated) {
+    return null
+  }
 
   return (
     <div className={styles.container}>

@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
+import { useRequireAuth } from '../../hooks/useRequireAuth'
 import styles from './page.module.css'
 
 const API = process.env.NEXT_PUBLIC_API_BASE_URL!
@@ -19,6 +20,7 @@ interface SpotifyArtist {
 
 export default function TopArtists() {
   const router = useRouter()
+  const { isAuthenticated, loading: authLoading } = useRequireAuth()
   const [items, setItems] = useState<SpotifyArtist[]>([])
   const [offset, setOffset] = useState(0)
   const [hasMore, setHasMore] = useState(true)
@@ -57,6 +59,18 @@ export default function TopArtists() {
       load()
     }
   }, [])
+
+  if (authLoading) {
+    return (
+      <div className={styles.container}>
+        <p className={styles.emptyState}>Carregando...</p>
+      </div>
+    )
+  }
+
+  if (!isAuthenticated) {
+    return null
+  }
 
   return (
     <div className={styles.container}>
