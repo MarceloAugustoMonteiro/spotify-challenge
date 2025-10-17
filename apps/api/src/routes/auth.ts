@@ -25,7 +25,7 @@ authRouter.get('/callback', async (req, res) => {
     res.cookie(COOKIE_NAME, jwtToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       path: '/',
       maxAge: spotifyTokens.expires_in * 1000
     })
@@ -56,7 +56,7 @@ authRouter.post('/refresh', async (req, res) => {
     res.cookie(COOKIE_NAME, newJwtToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       path: '/',
       maxAge: newTokens.expires_in * 1000
     })

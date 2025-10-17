@@ -16,5 +16,5 @@ app.get('/health', (_, res) => res.json({ ok: true }))
 app.use('/auth', authRouter)
 app.use('/api', spotifyRouter)
 
-const port = Number(process.env.API_PORT ?? 3001)
-app.listen(port, () => console.log(`[api] http://localhost:${port}`))
+const port = Number(process.env.PORT ?? 3001)
+app.listen(port, '0.0.0.0', () => console.log(`[api] http://localhost:${port}`))
