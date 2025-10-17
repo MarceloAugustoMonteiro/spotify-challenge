@@ -11,7 +11,7 @@ services:
       corepack enable
       corepack prepare pnpm@9.12.0 --activate
       cd ../..
-      pnpm install --frozen-lockfile
+      pnpm install --frozen-lockfile --prod=false
       cd apps/api
       pnpm build
     startCommand: node dist/index.js
@@ -46,7 +46,7 @@ services:
       corepack enable
       corepack prepare pnpm@9.12.0 --activate
       cd ../..
-      pnpm install --frozen-lockfile
+      pnpm install --frozen-lockfile --prod=false
       cd apps/web
       pnpm build
     startCommand: pnpm start
@@ -57,4 +57,3 @@ services:
         value: production
       - key: NEXT_PUBLIC_API_BASE_URL
         sync: false
-
