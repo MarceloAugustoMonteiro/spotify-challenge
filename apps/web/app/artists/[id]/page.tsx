@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { use } from 'react'
 import { useRequireAuth } from '../../../hooks/useRequireAuth'
 import styles from './page.module.css'
-import { formatDate } from '@/utils/formatDate'
+import { formatDate } from '../../../utils/formatDate'
 
 const API = process.env.NEXT_PUBLIC_API_BASE_URL!
 
