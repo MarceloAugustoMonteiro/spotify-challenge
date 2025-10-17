@@ -9,7 +9,7 @@ services:
     rootDir: apps/api
     buildCommand: |
       corepack enable
-      corepack prepare pnpm@latest --activate
+      corepack prepare pnpm@9.12.0 --activate
       cd ../..
       pnpm install --frozen-lockfile
       cd apps/api
@@ -44,7 +44,7 @@ services:
     rootDir: apps/web
     buildCommand: |
       corepack enable
-      corepack prepare pnpm@latest --activate
+      corepack prepare pnpm@9.12.0 --activate
       cd ../..
       pnpm install --frozen-lockfile
       cd apps/web
