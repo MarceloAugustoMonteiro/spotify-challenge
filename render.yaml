@@ -49,7 +49,7 @@ services:
       pnpm install --frozen-lockfile --prod=false
       cd apps/web
       pnpm build
-    startCommand: pnpm start
+    startCommand: node node_modules/next/dist/bin/next start -p $PORT
     envVars:
       - key: NODE_VERSION
         value: 20.18.0
